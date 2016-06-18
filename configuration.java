@@ -49,20 +49,19 @@ public class configuration extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lbl_nickname = new javax.swing.JLabel();
+        lbl_username = new javax.swing.JLabel();
         lbl_ip = new javax.swing.JLabel();
         lbl_port = new javax.swing.JLabel();
-        txt_nickname = new javax.swing.JTextField();
+        txt_username = new javax.swing.JTextField();
         txt_ip = new javax.swing.JTextField();
         txt_port = new javax.swing.JTextField();
         lbl_hint = new javax.swing.JLabel();
         btn_ok = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
         lbl_avatar = new javax.swing.JLabel();
-        box_avatar = new javax.swing.JLabel();
-        btn_browse = new javax.swing.JButton();
         lbl_yIP = new javax.swing.JLabel();
         lbl_yPort = new javax.swing.JLabel();
+        txt_password = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Configuration");
@@ -74,13 +73,13 @@ public class configuration extends javax.swing.JFrame {
             }
         });
 
-        lbl_nickname.setText("Your nickname:");
+        lbl_username.setText("Username:");
 
-        lbl_ip.setText("Your friend's IP:");
+        lbl_ip.setText("Server's IP:");
 
-        lbl_port.setText("Your friend's Port:");
+        lbl_port.setText("Server's Port:");
 
-        lbl_hint.setText("You have to enter your friend's IP and Port to begin:");
+        lbl_hint.setText("You have to enter server's IP and Port to begin:");
 
         btn_ok.setText("OK");
         btn_ok.addActionListener(new java.awt.event.ActionListener() {
@@ -96,16 +95,7 @@ public class configuration extends javax.swing.JFrame {
             }
         });
 
-        lbl_avatar.setText("Avatar:");
-
-        box_avatar.setText("avatar.jpg");
-
-        btn_browse.setText("Browse");
-        btn_browse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_browseActionPerformed(evt);
-            }
-        });
+        lbl_avatar.setText("Password:");
 
         lbl_yIP.setText("IP:");
 
@@ -115,48 +105,41 @@ public class configuration extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_ok, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btn_cancel)
-                .addGap(9, 9, 9))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_hint)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_port)
-                                    .addComponent(lbl_ip))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txt_port, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-                                    .addComponent(txt_ip)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_nickname)
-                                    .addComponent(lbl_avatar))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(31, 31, 31)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(65, 65, 65)
-                                                .addComponent(btn_browse))
-                                            .addComponent(box_avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                                        .addComponent(txt_nickname, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 10, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(lbl_yIP)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbl_yPort)
-                        .addGap(111, 111, 111))))
+                        .addGap(111, 111, 111))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btn_ok, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(btn_cancel))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(lbl_hint)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_port)
+                                    .addComponent(lbl_ip))
+                                .addGap(18, 36, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txt_ip, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                                    .addComponent(txt_port)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_username)
+                                    .addComponent(lbl_avatar))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txt_username, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+                                    .addComponent(txt_password))))
+                        .addGap(28, 28, 28))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,15 +150,13 @@ public class configuration extends javax.swing.JFrame {
                     .addComponent(lbl_yPort))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_nickname)
-                    .addComponent(txt_nickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_username)
+                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_avatar)
-                    .addComponent(box_avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_browse)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(lbl_hint)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -185,11 +166,11 @@ public class configuration extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_port))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_ok)
                     .addComponent(btn_cancel))
-                .addGap(0, 16, Short.MAX_VALUE))
+                .addGap(0, 21, Short.MAX_VALUE))
         );
 
         pack();
@@ -203,38 +184,80 @@ public class configuration extends javax.swing.JFrame {
         //p1.showOptionDialog(null, "Waiting for your friend to respond!!!", "Information", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[]{}, null);
         boolean flag = false;
         // check that connection was opened? if connection were opened, flag = true, else flag = false
-        Send s = new Send("send HELLO", "hello");
-        s.yIP = this.yIP;
-        s.yPort = this.yPort;
-        s.content = this.txt_nickname.getText();
-        this.yNickname = s.content;
+        send.threadName = "send HELO";
+        send.flag = "HELO";
+        send.yIP = this.yIP;
+        send.yPort = this.yPort;
+        send.content = this.txt_username.getText();
+        this.yUsername = send.content;
         try
         {
-            s.IpDest = InetAddress.getByName(this.txt_ip.getText());
-            s.PortDes = Integer.parseInt(this.txt_port.getText()) + 1;
+            send.IpDest = recv.fIP = InetAddress.getByName(this.txt_ip.getText());
+            send.PortDes = recv.fPort = Integer.parseInt(this.txt_port.getText()) + 1;
+            send.InitConnection();
+            recv.InitConnection();
         } catch (UnknownHostException ex)
         {
             Logger.getLogger(configuration.class.getName()).log(Level.SEVERE, null, ex);
         }
-        s.run();
+        send.run();
+        
+        
         
         System.out.print("Waiting for acknowledge");
+        int count = 0;
         while(!recv.acked)
         {
             System.out.print(".");
+            if(count++ > 1000)
+            {
+                System.out.println("\nServer not respond");
+                JOptionPane.showMessageDialog(null, "Server not respond", "ERROR", JOptionPane.ERROR_MESSAGE);
+                break;
+            }
         }
         
-        System.out.println("\nAcked from friend");
-        this.fNickname = recv.fNickname;
-        recv.yNickname = this.yNickname;
-        try
+        if(recv.acked)
         {
-            this.fIP = InetAddress.getByName(this.txt_ip.getText());
-            this.fPort = Integer.parseInt(this.txt_port.getText());
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(configuration.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("\nServer suggest crypto: " + recv.cryp_algo.toUpperCase());
+
+            recv.acked = false;
+            // send ack to server, ack for crypto
+            send.flag = "ACK";
+            send.threadName = "send ACK";
+            send.content = "";
+            send.run();
+
+            // send USER to server
+            send.threadName = "send USER";
+            send.flag = "USER";
+            send.content = " " + this.yUsername + " " + MyCrypto.digestMessage(this.txt_password.getText(), "MD5");
+            send.run();
+
+            System.out.print("Waiting for acknowledge");
+            count  = 0;
+            while(!recv.acked)
+            {
+                System.out.print(".");
+                if(count++ > 1000)
+                {
+                    System.out.println("\nServer not respond");
+                    JOptionPane.showMessageDialog(null, "Server not respond", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
+            
+            if(recv.acked)
+            {
+                try
+                {
+                    this.fIP = InetAddress.getByName(this.txt_ip.getText());
+                    this.fPort = Integer.parseInt(this.txt_port.getText());
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(configuration.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-        
         this.dispose();
     }//GEN-LAST:event_btn_okActionPerformed
 
@@ -243,34 +266,6 @@ public class configuration extends javax.swing.JFrame {
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_btn_cancelActionPerformed
-
-    private void btn_browseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_browseActionPerformed
-        // TODO add your handling code here:
-        File img = configuration.FileChooser();
-        if(img != null)
-        {
-            avt = img;
-            System.out.println(img.getAbsolutePath().toString());
-            int w = box_avatar.getWidth();
-            int h = box_avatar.getHeight();
-            int x = box_avatar.getX();
-            int y = box_avatar.getY();
-            System.out.println("(" + x + ", " + y + ")" + "\nW: " + w + " H: " + h);
-            Image srcImg = new ImageIcon(img.getAbsolutePath()).getImage();
-            if(panel != null)
-            {
-                panel.setVisible(false);
-                panel = null;
-            }
-            //setVisible(false);
-            panel = new ImageImplement(srcImg);
-            add(panel);
-            setVisible(true);
-            setSize(400,400);
-            box_avatar.setText("");
-            //setDefaultCloseOperation(EXIT_ON_CLOSE);
-        }
-    }//GEN-LAST:event_btn_browseActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
@@ -290,7 +285,6 @@ public class configuration extends javax.swing.JFrame {
         
         while(flag == false)
         {
-
             int choice = chooser.showOpenDialog(null);
 
             if (choice != JFileChooser.APPROVE_OPTION)
@@ -344,32 +338,32 @@ public class configuration extends javax.swing.JFrame {
         });
     }
     
-    private ImageImplement panel;
-    public String yNickname;
-    public String fNickname;
+    public String yUsername;
+    public String yPassword;
+    public String cryp_algo;
     public InetAddress yIP;
     public int yPort;
     public InetAddress fIP;
     public int fPort;
-    public File avt = null;
     public boolean isClosed = false;
     public Receive recv;
+    public Send send;
     public Thread own_thrd;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel box_avatar;
-    private javax.swing.JButton btn_browse;
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_ok;
     private javax.swing.JLabel lbl_avatar;
     private javax.swing.JLabel lbl_hint;
     private javax.swing.JLabel lbl_ip;
-    private javax.swing.JLabel lbl_nickname;
     private javax.swing.JLabel lbl_port;
+    private javax.swing.JLabel lbl_username;
     private javax.swing.JLabel lbl_yIP;
     private javax.swing.JLabel lbl_yPort;
     public javax.swing.JTextField txt_ip;
-    public javax.swing.JTextField txt_nickname;
+    private javax.swing.JPasswordField txt_password;
     public javax.swing.JTextField txt_port;
+    public javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
 

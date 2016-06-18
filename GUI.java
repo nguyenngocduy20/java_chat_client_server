@@ -43,10 +43,14 @@ public class GUI extends javax.swing.JFrame {
             doc = new StringBuilder();
             yNickname = "anonymous";
             fNickname = "anonymous_friend";
+            send.yIP = this.yIP;
+            send.yPort = this.yPort;
+            //send.InitConnection();
             recv.yIP = this.yIP;
             recv.yPort = this.yPort + 1;
             recv.t = this.txt_chatline;
             recv.doc = this.doc;
+            //recv.InitConnection();
             recv_thrd.start();
         } catch (UnknownHostException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -282,6 +286,7 @@ public class GUI extends javax.swing.JFrame {
         config.yIP = this.yIP;
         config.yPort = this.yPort;
         config.recv = this.recv;
+        config.send = this.send;
         config.show(true);
         this.fIP = config.fIP;
         this.fPort = config.fPort;
@@ -432,11 +437,10 @@ public class GUI extends javax.swing.JFrame {
     private int fPort;
     private String yNickname;
     private String fNickname;
-    private String path_yAvt;
-    private String path_fAvt;
     static Receive recv = new Receive("RECEIVE");
     static Thread recv_thrd = new Thread(recv);
     private Thread own_thrd;
+    static Send send = new Send("SEND");
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_attach;
