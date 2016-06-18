@@ -23,6 +23,7 @@ public class Receive implements Runnable
     public String threadName;
     public String flag;
     public String fNickname;
+    public List<People> friendList = new ArrayList();
     public String yNickname;
     public int yPort; // port nhan mac dinh
     public InetAddress yIP; // ip
@@ -107,11 +108,44 @@ public class Receive implements Runnable
                 {
                     // content of packet was saved to this.content
                     acked = true;
+                    if(this.previous_cmd.equals("LIST"))
+                    {
+                        People p = new People();
+                        p.username = this.content.substring(0, this.content.indexOf("|"));
+                        this.content = this.content.substring(p.username.length() + 1, this.content.length());
+                        if(this.content.charAt(0) == 0)
+                            p.status = false;
+                        else
+                            p.status = true;
+                        
+                        this.content = this.content.substring(2, this.content.length());
+                        p.ip = InetAddress.getByName(this.content.substring(0, this.content.indexOf("|")));
+                        this.content = this.content.substring(p.ip.toString().length(), this.content.length());
+                        p.port = Integer.parseInt(this.content);
+                        this.friendList.add(p);
+                    }
                 }
                 
                 if(this.flag.equals("EACK"))
                 {
                     acked = false;
+                    if(this.previous_cmd.equals("LIST"))
+                    {
+                        People p = new People();
+                        p.username = this.content.substring(0, this.content.indexOf("|"));
+                        this.content = this.content.substring(p.username.length() + 1, this.content.length());
+                        if(this.content.charAt(0) == 0)
+                            p.status = false;
+                        else
+                            p.status = true;
+                        
+                        this.content = this.content.substring(2, this.content.length());
+                        p.ip = InetAddress.getByName(this.content.substring(0, this.content.indexOf("|")));
+                        this.content = this.content.substring(p.ip.toString().length(), this.content.length());
+                        p.port = Integer.parseInt(this.content);
+                        this.friendList.add(p);
+                    }
+                    this.previous_cmd = "";
                 }
                 
                 /*
