@@ -77,6 +77,8 @@ public class Send implements Runnable
         System.out.println("Your IP: " + this.yIP.toString() + "\tYour port: " + this.yPort);
         System.out.println("Init DatagramSocket");
         System.out.println("Datagram Init Successful");
+        
+        
         if(flag.equals("HELO"))
         {
             try
@@ -86,7 +88,6 @@ public class Send implements Runnable
                 System.out.println("Dest IP: " + IpDest.toString() + "\nDest Port: " + PortDes);
                 send2Server.write(sendData);
                 System.out.println("Packet sent!");
-                dsoc.close();
                 System.out.println("DatagramSocket Closed");
             } catch (IOException ex)
             {
@@ -94,6 +95,8 @@ public class Send implements Runnable
             }
             
         }
+        
+        
         if(flag.equals("ACK"))
         {
             System.out.println("Packet ACK");
@@ -112,6 +115,8 @@ public class Send implements Runnable
                 Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        
         if(flag.equals("USER"))
         {
             System.out.println("Packet USER");
@@ -130,6 +135,8 @@ public class Send implements Runnable
                 Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        
         if(flag.equals("NEW"))
         {
             System.out.println("Packet NEW");
@@ -147,6 +154,8 @@ public class Send implements Runnable
                 Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);                
             }
         }
+        
+        
         if(flag.equals("CHAT"))
         {
             
@@ -165,6 +174,8 @@ public class Send implements Runnable
                 Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        
         if(flag.equals("MESS"))
         {
             System.out.println("Packet MESS");
@@ -181,6 +192,8 @@ public class Send implements Runnable
                 Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        
         if(flag.equals("LIST"))
         {
             
@@ -198,6 +211,8 @@ public class Send implements Runnable
                 Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        
         if(flag.equals("ADDR"))
         {
             System.out.println("Packet ADDR");

@@ -31,27 +31,47 @@ public class Receive implements Runnable
     public InetAddress sIP;
     public int sPort; // port gui
     public String content; // chua noi dung goi tin
-    public DatagramPacket packet;
+    public String previous_cmd;
     public boolean acked;
     public boolean isRunnable = true;
     public JEditorPane t;
     public StringBuilder doc;
+    public Socket dsoc;
+    BufferedReader receiveFromServer;
+    public String cryp_algo;
     
     public Receive()
     {
-            System.out.println("Init RECEIVE");
-            System.out.println("Your IP: " + yIP + "\tYour port: " + yPort);
-            this.yNickname = "anonymous";
-            this.fNickname = "anonymous_friend";
+        System.out.println("Init RECEIVE");
+        System.out.println("Your IP: " + yIP + "\tYour port: " + yPort);
+        this.yNickname = "anonymous";
+        this.fNickname = "anonymous_friend";
+        try
+        {
+            dsoc = new Socket(this.fIP, this.fPort, this.yIP, this.yPort); // connect to server
+            receiveFromServer = new BufferedReader(new InputStreamReader(dsoc.getInputStream()));
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
     }
 
     public Receive(String name)
     {
-            System.out.println("Init RECEIVE");
-            this.threadName = name;
-            System.out.println("Thread name: " + this.threadName +"\tYour IP: " + yIP + "\tYour port: " + yPort);
-            this.yNickname = "anonymous";
-            this.fNickname = "anonymous_friend";
+        System.out.println("Init RECEIVE");
+        this.threadName = name;
+        System.out.println("Thread name: " + this.threadName +"\tYour IP: " + yIP + "\tYour port: " + yPort);
+        this.yNickname = "anonymous";
+        this.fNickname = "anonymous_friend";
+        try
+        {
+            dsoc = new Socket(this.fIP, this.fPort, this.yIP, this.yPort); // connect to server
+            receiveFromServer = new BufferedReader(new InputStreamReader(dsoc.getInputStream()));
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void run()
@@ -62,21 +82,20 @@ public class Receive implements Runnable
             {
                 System.out.println("Init DatagramSocket");
                 //System.out.println("Thread name: " + this.threadName +"\tYour IP: " + IPAddress.toString() + "\tYour port: " + yPort);
-                DatagramSocket ds = new DatagramSocket(yPort, yIP);
                 System.out.println("Init RECEIVE datagramSocket successful");
-                
-                byte[] recvData = new byte[16384];
-                
+                                
                 // nhan goi tin
-                packet = new DatagramPacket(recvData, 16384);
-                ds.receive(packet);
-                this.sIP = this.fIP = packet.getAddress();
-                this.sPort = this.fPort = packet.getPort();
+                this.content = receiveFromServer.readLine();
+                this.receiveFromServer.readLine();
+                this.sIP = this.fIP;
+                this.sPort = this.fPort;
                 System.out.println("Received packet from " + sIP + "\tPort: " + sPort);
-                System.out.println("Content [" + packet.getLength() + "]: " + new String(packet.getData()).substring(0, packet.getLength()));
-                parsePacket(packet);
+                System.out.println("Content [" + this.content.length() + "]: " + this.content);
+                parsePacket(this.content);
                 
-                if(this.flag.equals("hello"))
+                // client don't receive HELO
+                /*
+                if(this.flag.equals("HELO"))
                 {
                     this.fNickname = this.content.substring(0, this.content.indexOf(" "));
                     Send s = new Send("send ACK", "ack");
@@ -86,21 +105,20 @@ public class Receive implements Runnable
                     s.PortDes = this.sPort + 1; // recv_port = send_port + 1;
                     s.run();
                 }
+                */
                 
-                if(this.flag.equals("ack"))
+                if(this.flag.equals("ACK"))
                 {
+                    // content of packet was saved to this.content
                     acked = true;
                 }
                 
-                if(this.flag.equals("star"))
+                if(this.flag.equals("EACK"))
                 {
-                    Send s = new Send("send SEND", "send");
-                    s.IpDest = packet.getAddress();
-                    s.PortDes = packet.getPort() + 1;
-                    s.content = this.content; // path to file
-                    s.run();
+                    acked = false;
                 }
                 
+                /*
                 if(this.flag.equals(""))
                 {
                     ds.receive(packet);
@@ -124,24 +142,19 @@ public class Receive implements Runnable
                     
                     System.out.println("Received file " + this.content + "(" + totalBytesRecv + ")");
                 }
+                */
                 
-                if(this.flag.equals("mess"))
+                if(this.flag.equals("MESS"))
                 {
-                    parsePacket(packet);
+                    parsePacket(this.content);
                     UpdateChatText(this.content);
                 }
                 
-                if(this.flag.equals("file"))
+                if(this.flag.equals("CRYP"))
                 {
-                    parsePacket(packet);
+                    // this.content = method used by server
+                    cryp_algo = this.content;
                 }
-                
-                if(this.flag.equals("pubk"))
-                {
-                    // not yet implement
-                }
-                
-                ds.close();
             } catch (SocketTimeoutException ex)
             {
                 if(!isRunnable)
@@ -154,26 +167,33 @@ public class Receive implements Runnable
         }
     }
     
-    public String parsePacket(DatagramPacket packet)
+    public String parsePacket(String packet)
     {
-        String s = new String(packet.getData()).substring(0, packet.getLength());
+        String s = new String(packet);
         this.flag = s.substring(0, s.indexOf(" "));
-        if(this.flag.equals("hello") || this.flag.equals("ack"))
+        this.sIP = this.fIP;
+        this.sPort = this.fPort;
+        if(this.flag.equals("HELO") || this.flag.equals("ACK") || this.flag.equals("EACK"))
         {
-            this.sIP = packet.getAddress();
-            this.sPort = packet.getPort();
             this.content = s.substring(this.flag.length() + 1, s.length());
             //this.content = this.content.substring(0, this.content.indexOf(" "));
             System.out.println("Flag [" + this.flag.length() + "]: <" + this.flag.toUpperCase() + ">");
         }
         
-        if(this.flag.equals("mess") || this.flag.equals("file")  || this.flag.equals("eof"))
+        if(this.flag.equals("MESS") || this.flag.equals("CHAT"))
         {
             this.content = s.substring(this.flag.length() + 1, s.length());
             System.out.println("Flag [" + this.flag.length() + "]: <" + this.flag.toUpperCase() + ">");
         }
         
-        if(this.flag.length() > 4 && !this.flag.equals("ack") && !this.flag.equals("eof") && !this.flag.equals("hello"))
+        if(this.flag.equals("CRYP"))
+        {
+            this.content = s.substring(this.flag.length() + 1, s.length());
+            System.out.println("Flag [" + this.flag.length() + "]: <" + this.flag.toUpperCase() + ">");
+            System.out.println("Crypto using: " + this.content.toUpperCase());
+        }
+        
+        if(this.flag.length() > 4 && !this.flag.equals("ACK"))
         {
             this.flag = "";
             System.out.println("Flag [" + this.flag.length() + "]: <" + this.flag.toUpperCase() + ">");
