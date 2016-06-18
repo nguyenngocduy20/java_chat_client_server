@@ -80,9 +80,9 @@ public class Receive implements Runnable
                 //System.out.println("Thread name: " + this.threadName +"\tYour IP: " + IPAddress.toString() + "\tYour port: " + yPort);
                 System.out.println("Init RECEIVE datagramSocket successful");
                                 
-                // nhan goi tin
-                this.content = receiveFromServer.readLine();
-                this.receiveFromServer.readLine();
+                // nhan goi tini
+                if((this.content = receiveFromServer.readLine()) == null)
+                    continue;
                 this.sIP = this.fIP;
                 this.sPort = this.fPort;
                 System.out.println("Received packet from " + sIP + "\tPort: " + sPort);
