@@ -38,7 +38,8 @@ public class Receive implements Runnable
     public boolean isRunnable = true;
     public JEditorPane t;
     public StringBuilder doc;
-    public Socket dsoc;
+    public ServerSocket dsoc;
+    public Socket server2client;
     BufferedReader receiveFromServer;
     public String cryp_algo;
     
@@ -64,8 +65,7 @@ public class Receive implements Runnable
     {
         try
         {
-            dsoc = new Socket(this.fIP, this.fPort, this.yIP, this.yPort); // connect to server
-            receiveFromServer = new BufferedReader(new InputStreamReader(dsoc.getInputStream()));
+            dsoc = new ServerSocket(this.yPort, 5, this.yIP); // connect to server
         } catch (IOException ex)
         {
             Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,6 +74,15 @@ public class Receive implements Runnable
     
     public void run()
     {
+        try
+        {
+            server2client = dsoc.accept();
+            receiveFromServer = new BufferedReader(new InputStreamReader(server2client.getInputStream()));
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         while(true)
         {
             try 
