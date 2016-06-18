@@ -124,7 +124,7 @@ public class GUI extends javax.swing.JFrame {
 
         txt_chatline.setEditable(false);
         jScrollPane2.setViewportView(txt_chatline);
-        txt_chatline.setContentType("text/html");
+        txt_chatline.setContentType("text/html; charset=UTF-8");
         txt_chatline.getAccessibleContext().setAccessibleDescription("");
 
         lbl_yNickname.setText("Your Nickname:");
@@ -232,8 +232,8 @@ public class GUI extends javax.swing.JFrame {
             try
             {
                 p = currentDirectory.getCanonicalPath();
-                html = new File(p + "\\temp.db");
-                b = new RandomAccessFile(html, "w");
+                html = new File(p + "/temp.db");
+                b = new RandomAccessFile(html, "rw");
                 b.seek(html.length() - 7);
                 b.write(("<br>" + s + "</br></html>").getBytes(), 0, ("<br>" + s + "</br></html>").length());
                 b.close();
@@ -270,8 +270,8 @@ public class GUI extends javax.swing.JFrame {
             try
             {
                 p = currentDirectory.getCanonicalPath();
-                html = new File(p + "\\temp.db");
-                b = new RandomAccessFile(html, "w");
+                html = new File(p + "/temp.db");
+                b = new RandomAccessFile(html, "rw");
                 b.seek(html.length() - 7);
                 b.write(("<br>" + s + "</br></html>").getBytes(), 0, ("<br>" + s + "</br></html>").length());
                 b.close();
