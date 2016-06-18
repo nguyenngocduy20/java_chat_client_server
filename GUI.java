@@ -80,8 +80,7 @@ public class GUI extends javax.swing.JFrame {
         lbl_fNickname = new javax.swing.JLabel();
         lbl_fIP = new javax.swing.JLabel();
         lbl_fPort = new javax.swing.JLabel();
-        lbl_fAvt = new javax.swing.JLabel();
-        lbl_yAvt = new javax.swing.JLabel();
+        box_friend = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java Chat 1312084_1312086_1312110");
@@ -139,9 +138,15 @@ public class GUI extends javax.swing.JFrame {
 
         lbl_fPort.setText("Port:");
 
-        lbl_fAvt.setText("Friend's Avatar");
-
-        lbl_yAvt.setText("Your Avatar");
+        box_friend.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select one:"}));
+        box_friend.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                box_friendMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                box_friendMouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,10 +161,9 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_attach, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                            .addComponent(btn_attach, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
                             .addComponent(btn_send, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_fAvt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_yAvt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(box_friend, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_yNickname)
@@ -189,19 +193,17 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(lbl_fIP)
                     .addComponent(lbl_fPort))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbl_fAvt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbl_yAvt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn_attach, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_send, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btn_attach, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_send, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(box_friend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42))
         );
 
@@ -307,6 +309,32 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         set_connection_text();
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void box_friendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_box_friendMouseClicked
+        // TODO add your handling code here:
+        int index = this.box_friend.getSelectedIndex();
+        this.fNickname = recv.friendList.get(index).username;
+        
+        send.threadName = "send CHAT";
+        send.flag = "CHAT";
+        send.content = this.fNickname;
+        send.run();
+    }//GEN-LAST:event_box_friendMouseClicked
+
+    private void box_friendMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_box_friendMouseEntered
+        // TODO add your handling code here:
+        send.threadName = "send LIST";
+        send.flag = "LIST";
+        send.content = "";
+        recv.previous_cmd = "LIST";
+        send.run();
+        
+        for(int i = 0; i < recv.friendList.size(); i++)
+        {
+            if(recv.friendList.get(i).status == true)
+                this.box_friend.addItem(recv.friendList.get(i).username);
+        }
+    }//GEN-LAST:event_box_friendMouseEntered
 
     public String get_date()
     {
@@ -447,15 +475,14 @@ public class GUI extends javax.swing.JFrame {
     static Send send = new Send("SEND");
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> box_friend;
     private javax.swing.JButton btn_attach;
     private javax.swing.JButton btn_send;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lbl_fAvt;
     private javax.swing.JLabel lbl_fIP;
     private javax.swing.JLabel lbl_fNickname;
     private javax.swing.JLabel lbl_fPort;
-    private javax.swing.JLabel lbl_yAvt;
     private javax.swing.JLabel lbl_yIP;
     private javax.swing.JLabel lbl_yNickname;
     private javax.swing.JLabel lbl_yPort;
