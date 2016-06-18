@@ -164,18 +164,18 @@ public class MyCrypto
 	// Algorithm: AES
 	// Mode: CBC
 	// Tham so: Key, IV, Messsge
-	public static String symEncryptMessage(String key, String initVector, String message)
+	public static String symEncryptMessage(String key, String message)
 	{
 		try 
 		{
-			IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
+			//IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
 			// Hash thanh 32 bytes - 256 bits key
 			MessageDigest sha = MessageDigest.getInstance("SHA-256");
 			byte[] keyBytes = sha.digest(key.getBytes());
 			
 			SecretKeySpec keySpec = new SecretKeySpec(keyBytes,"AES");
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-			cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
+			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+			cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 			
 			//byte[] cipherBytes = cipher.doFinal(message.getBytes());
 			byte[] cipherBytes = cipher.doFinal(message.getBytes("UTF-8"));
@@ -184,8 +184,7 @@ public class MyCrypto
 			
 			return cipherText;	
 		}
-		catch (NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException
-				| NoSuchPaddingException | UnsupportedEncodingException | IllegalBlockSizeException e)
+		catch (NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | NoSuchPaddingException | UnsupportedEncodingException | IllegalBlockSizeException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -195,19 +194,19 @@ public class MyCrypto
 		return null; 
 	}
 	
-	public static String symDecryptMessage(String key, String initVector, String cipherText)
+	public static String symDecryptMessage(String key, String cipherText)
 	{
 		try 
 		{
-			IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
+			//IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
 			
 			// Hash thanh 32 bytes - 256 bits key
 			MessageDigest sha = MessageDigest.getInstance("SHA-256");
 			byte[] keyBytes = sha.digest(key.getBytes());
 			
 			SecretKeySpec keySpec = new SecretKeySpec(keyBytes,"AES");
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-			cipher.init(Cipher.DECRYPT_MODE, keySpec, iv);
+			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+			cipher.init(Cipher.DECRYPT_MODE, keySpec);
 			
 			byte[] plainBytes = cipher.doFinal(Base64.getDecoder().decode(cipherText));
 			String plainText = new String(plainBytes);
@@ -215,8 +214,7 @@ public class MyCrypto
 			
 			return plainText;
 		}
-		catch (NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | NoSuchPaddingException |
-				UnsupportedEncodingException | IllegalBlockSizeException | InvalidAlgorithmParameterException e)
+		catch (NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -553,5 +551,27 @@ public class MyCrypto
 	}
 	public void setSymmetricKey(String symmetricKey) {
 		this.symmetricKey = symmetricKey;
+	}
+        
+        public static SecretKey secretKeyGen_S(String s) throws NoSuchAlgorithmException, UnsupportedEncodingException
+	{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(s.getBytes("UTF-8"));
+            StringBuffer hexString = new StringBuffer();
+
+            for (int i = 0; i < hash.length; i++)
+            {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) 
+                {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+        
+            String result = hexString.toString();
+            //System.out.println("Key size: " + hash.length + " bytes\nHash: " + result);
+        
+            return new SecretKeySpec(hash, 0, hash.length/2, "AES");
 	}
 }

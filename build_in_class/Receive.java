@@ -7,6 +7,7 @@ package build_in_class;
 import java.util.*;
 import java.io.*;
 import java.net.*;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeoutException;
@@ -245,7 +246,23 @@ public class Receive implements Runnable
     }
     
     public void UpdateChatText(String text)
-    {        
+    {
+        String from = text.substring(0, text.indexOf(" "));
+        text = text.substring(from.length() + 1, text.length());
+        String to = text.substring(0, text.indexOf(" "));
+        text = text.substring(to.length() + 1, text.length());
+        
+        try
+        {
+            text = MyCrypto.symDecryptMessage(MyCrypto.keyToString(MyCrypto.secretKeyGen_S("DuyDuyBuDai255" + this.yNickname)), text);
+        } catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex)
+        {
+            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         System.out.println("MESS content: " + text);
         String pic = "<img src=\"C:\\Users\\nguye\\Pictures\\11212762_776134922485724_4283480414057853955_n.jpg\" alt=\"avt\" style=\"width:24px;height:24px;\">";
         String s = "<span style=\"color:red;font-weight:bold\">&emsp <span style=\"color:blue;font-weight:bold\">" + this.fNickname.toUpperCase() + "</span> &emsp[" + this.get_date() + "]</span>: ";
