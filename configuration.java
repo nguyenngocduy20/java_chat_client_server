@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -273,6 +274,51 @@ public class configuration extends javax.swing.JFrame {
         {
             this.lbl_yIP.setText("IP: " + this.yIP.toString());
             this.lbl_yPort.setText("Port: " + this.yPort);
+        }
+        
+        Object[] options = {"Not yet", "Yes"};
+        int n = (int) JOptionPane.showInputDialog(null, "Have you had your account?", "Prompt", JOptionPane.YES_NO_OPTION, null, options, options[1]);
+        if(n == 0) // not yet
+        {
+            String user = JOptionPane.showInputDialog(null, "Enter username to create: ");
+            if(user != null)
+            {
+                JPanel panel = new JPanel();
+                JLabel label = new JLabel("Enter password for user:");
+                JPasswordField pass = new JPasswordField(100);
+                panel.add(label);
+                panel.add(pass);
+                options = new String[]{"OK", "Cancel"};
+                int option = JOptionPane.showOptionDialog(null, panel, "The title",
+                                         JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                         null, options, options[1]);
+                if(option == 0) // pressing OK button
+                {
+                    String password = new String(pass.getPassword());
+                    System.out.println("Your password is: " + new String(password));
+                    
+                    // get server information
+                    JPanel myPanel = new JPanel();
+                    JTextField ip = new JTextField(100);
+                    JTextField port = new JTextField(100);
+                    myPanel.add(ip);
+                    myPanel.add(port);
+                    JOptionPane.showMessageDialog(null, myPanel);
+                    
+                    send.threadName = "send NEW";
+                    try
+                    {
+                        send.IpDest = InetAddress.getByName(ip.getText());
+                        send.PortDes = Integer.parseInt(port.getText());
+                        send.flag = "NEW";
+                        send.content = " " + user + " " + MyCrypto.digestMessage(password, "MD5");
+                        send.run();
+                    } catch (UnknownHostException ex)
+                    {
+                        Logger.getLogger(configuration.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
         }
         
     }//GEN-LAST:event_formWindowOpened

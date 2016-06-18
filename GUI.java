@@ -9,8 +9,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
 import java.text.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -245,6 +247,19 @@ public class GUI extends javax.swing.JFrame {
             {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            send.threadName = "send MESS";
+            send.flag = "MESS";
+            this.fNickname = recv.friendList.get(this.box_friend.getSelectedIndex()).username;
+            try
+            {
+                send.content = this.yNickname + " " + this.fNickname + " " + MyCrypto.symDecryptMessage(MyCrypto.keyToString(MyCrypto.secretKeyGen_S("DuyDuyBuDai255" + this.fNickname)), this.txt_send.getText());
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            send.run();
             
             this.clear_text_pane();
         }
@@ -284,6 +299,19 @@ public class GUI extends javax.swing.JFrame {
             {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            send.threadName = "send MESS";
+            send.flag = "MESS";
+            this.fNickname = recv.friendList.get(this.box_friend.getSelectedIndex()).username;
+            try
+            {
+                send.content = this.yNickname + " " + this.fNickname + " " + MyCrypto.symDecryptMessage(MyCrypto.keyToString(MyCrypto.secretKeyGen_S("DuyDuyBuDai255" + this.fNickname)), this.txt_send.getText());
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            send.run();
             
             this.clear_text_pane();
         }
