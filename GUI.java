@@ -234,7 +234,8 @@ public class GUI extends javax.swing.JFrame {
             try
             {
                 p = currentDirectory.getCanonicalPath();
-                html = new File(p + "/temp.db");
+                if(this.box_friend.getSelectedIndex() > 0)
+                html = new File(p + "/temp_" + recv.friendList.get(this.box_friend.getSelectedIndex()).username + ".db");
                 b = new RandomAccessFile(html, "rw");
                 b.seek(html.length() - 7);
                 b.write(("<br>" + s + "</br></html>").getBytes(), 0, ("<br>" + s + "</br></html>").length());
@@ -272,7 +273,8 @@ public class GUI extends javax.swing.JFrame {
             try
             {
                 p = currentDirectory.getCanonicalPath();
-                html = new File(p + "/temp.db");
+                if(this.box_friend.getSelectedIndex() > 0)
+                    html = new File(p + "/temp_" + recv.friendList.get(this.box_friend.getSelectedIndex()).username + ".db");
                 b = new RandomAccessFile(html, "rw");
                 b.seek(html.length() - 7);
                 b.write(("<br>" + s + "</br></html>").getBytes(), 0, ("<br>" + s + "</br></html>").length());
@@ -315,10 +317,23 @@ public class GUI extends javax.swing.JFrame {
         int index = this.box_friend.getSelectedIndex();
         this.fNickname = recv.friendList.get(index).username;
         
-        send.threadName = "send CHAT";
-        send.flag = "CHAT";
-        send.content = this.fNickname;
-        send.run();
+        File currentDirectory = new File(new File(".").getAbsolutePath());
+        String p;
+        File html = null;
+        RandomAccessFile b = null;
+        try
+        {
+            p = currentDirectory.getCanonicalPath();
+            if(this.box_friend.getSelectedIndex() > 0)
+                html = new File(p + "/temp_" + recv.friendList.get(this.box_friend.getSelectedIndex()).username + ".db");
+            else
+                html = new File(p + "/temp.db");
+            this.txt_chatline.setPage(html.toURI().toURL());
+        } catch (IOException ex)
+        {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_box_friendMouseClicked
 
     private void box_friendMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_box_friendMouseEntered
