@@ -277,7 +277,7 @@ public class configuration extends javax.swing.JFrame {
         }
         
         Object[] options = {"Not yet", "Yes"};
-        int n = (int) JOptionPane.showInputDialog(null, "Have you had your account?", "Prompt", JOptionPane.YES_NO_OPTION, null, options, options[1]);
+        int n = (int) JOptionPane.showOptionDialog(null, "Have you had your account?", "Prompt", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if(n == 0) // not yet
         {
             String user = JOptionPane.showInputDialog(null, "Enter username to create: ");
@@ -288,7 +288,7 @@ public class configuration extends javax.swing.JFrame {
                 JPasswordField pass = new JPasswordField(100);
                 panel.add(label);
                 panel.add(pass);
-                options = new String[]{"OK", "Cancel"};
+                options = new String[]{"OK"};
                 int option = JOptionPane.showOptionDialog(null, panel, "The title",
                                          JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
                                          null, options, options[1]);
@@ -337,14 +337,6 @@ public class configuration extends javax.swing.JFrame {
                 return null;
 
             chosenFile = chooser.getSelectedFile();
-
-            String filePath = chosenFile.getAbsolutePath();
-            if(!(filePath.endsWith(".jpg") || filePath.endsWith(".png") || filePath.endsWith("bmp")))
-            {
-                JOptionPane.showMessageDialog(null, "File chosen must be image file.");
-            }
-            else
-                flag = true;
         }
         return chosenFile;
     }

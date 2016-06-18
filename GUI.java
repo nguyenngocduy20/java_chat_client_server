@@ -1,5 +1,6 @@
 
 import build_in_class.*;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,6 +18,7 @@ import java.text.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.text.*;
 
 /*
@@ -115,6 +117,11 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txt_send);
 
         btn_attach.setText("Attachment");
+        btn_attach.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_attachActionPerformed(evt);
+            }
+        });
 
         btn_send.setText("Send");
         btn_send.addActionListener(new java.awt.event.ActionListener() {
@@ -379,6 +386,21 @@ public class GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_box_friendMouseEntered
 
+    private void btn_attachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_attachActionPerformed
+        // TODO add your handling code here:
+        attachment = configuration.FileChooser();
+        if(attachment != null)
+        {
+            try
+            {
+                System.out.println("Chose file: " + attachment.getCanonicalPath());
+            } catch (IOException ex)
+            {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btn_attachActionPerformed
+
     public String get_date()
     {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -421,7 +443,7 @@ public class GUI extends javax.swing.JFrame {
             File currentDirectory = new File(new File(".").getAbsolutePath());
             String p = currentDirectory.getCanonicalPath();
             
-            FileWriter temp = new FileWriter(p + "\\temp.db");
+            FileWriter temp = new FileWriter(p + "/temp.db");
             BufferedWriter b = new BufferedWriter(temp);
             b.write(doc.toString());
             b.close();
@@ -442,7 +464,7 @@ public class GUI extends javax.swing.JFrame {
         try 
         {
             p = currentDirectory.getCanonicalPath();
-            in = new FileReader(p + "\\temp" + this.yNickname + ".db");
+            in = new FileReader(p + "/temp" + this.yNickname + ".db");
             b = new BufferedReader(in);
             String temp = b.readLine();
             if(temp != null)
@@ -516,6 +538,7 @@ public class GUI extends javax.swing.JFrame {
     static Thread recv_thrd = new Thread(recv);
     private Thread own_thrd;
     static Send send = new Send("SEND");
+    private File attachment;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> box_friend;
