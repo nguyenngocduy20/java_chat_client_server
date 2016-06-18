@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.*;
@@ -41,6 +42,7 @@ public class GUI extends javax.swing.JFrame {
             this.lbl_yIP.setText(this.lbl_yIP.getText() + " " + yIP.toString());
             this.lbl_yPort.setText(this.lbl_yPort.getText() + " " + yPort);
             doc = new StringBuilder();
+            doc = doc.append("<html>\n</html>");
             yNickname = "anonymous";
             fNickname = "anonymous_friend";
             send.yIP = this.yIP;
@@ -222,26 +224,25 @@ public class GUI extends javax.swing.JFrame {
                 s = s + this.txt_send.getText().substring(1, this.txt_send.getText().length());
             else
                 s = s + this.txt_send.getText();
-            read_temp();
-            doc.append("\n<br>" + s + "</br>");
-            s = doc.toString();
-            s = "<html>" + s + "\n</html>";
-            System.out.println(s);
-            txt_chatline.setText(s);
             
-            // send message to friend
-            Send mess = new Send("Send MESS", "mess");
-            mess.yIP = this.yIP;
-            mess.yPort = this.yPort;
-            mess.IpDest = this.fIP;
-            mess.PortDes = this.fPort + 1;
-            if(this.txt_send.getText().charAt(0) == '\n')
-                mess.content = this.txt_send.getText().substring(1, this.txt_send.getText().length());
-            else
-                mess.content = this.txt_send.getText();
-            mess.run();
+            File currentDirectory = new File(new File(".").getAbsolutePath());
+            String p;
+            File html = null;
+            RandomAccessFile b = null;
+            try
+            {
+                p = currentDirectory.getCanonicalPath();
+                html = new File(p + "\\temp.db");
+                b = new RandomAccessFile(html, "w");
+                b.seek(html.length() - 7);
+                b.write(("<br>" + s + "</br></html>").getBytes(), 0, ("<br>" + s + "</br></html>").length());
+                b.close();
+                this.txt_chatline.setPage(html.toURI().toURL());
+            } catch (IOException ex)
+            {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-            write_temp();
             this.clear_text_pane();
         }
     }//GEN-LAST:event_txt_sendKeyPressed
@@ -261,22 +262,25 @@ public class GUI extends javax.swing.JFrame {
                 s = s + this.txt_send.getText().substring(1, this.txt_send.getText().length());
             else
                 s = s + this.txt_send.getText();
-            read_temp();
-            doc.append("\n<br>" + s + "</br>");
-            s = doc.toString();
-            s = "<html>" + s + "\n</html>";
-            System.out.println(s);
-            txt_chatline.setText(s);
             
-            // send mesage to friend
-            Send mess = new Send("Send MESS", "mess");
-            if(this.txt_send.getText().charAt(0) == '\n')
-                mess.content = this.txt_send.getText().substring(1, this.txt_send.getText().length());
-            else
-                mess.content = this.txt_send.getText();
-            mess.run();
+            File currentDirectory = new File(new File(".").getAbsolutePath());
+            String p;
+            File html = null;
+            RandomAccessFile b = null;
+            try
+            {
+                p = currentDirectory.getCanonicalPath();
+                html = new File(p + "\\temp.db");
+                b = new RandomAccessFile(html, "w");
+                b.seek(html.length() - 7);
+                b.write(("<br>" + s + "</br></html>").getBytes(), 0, ("<br>" + s + "</br></html>").length());
+                b.close();
+                this.txt_chatline.setPage(html.toURI().toURL());
+            } catch (IOException ex)
+            {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-            write_temp();
             this.clear_text_pane();
         }
     }//GEN-LAST:event_btn_sendActionPerformed
@@ -346,7 +350,7 @@ public class GUI extends javax.swing.JFrame {
             File currentDirectory = new File(new File(".").getAbsolutePath());
             String p = currentDirectory.getCanonicalPath();
             
-            FileWriter temp = new FileWriter(p + "\\temp" + this.yNickname + ".db");
+            FileWriter temp = new FileWriter(p + "\\temp.db");
             BufferedWriter b = new BufferedWriter(temp);
             b.write(doc.toString());
             b.close();
