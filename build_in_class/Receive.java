@@ -146,6 +146,17 @@ public class Receive implements Runnable
                         this.friendList.add(p);
                     }
                     this.previous_cmd = "";
+                    
+                    File currentDirectory = new File(new File(".").getAbsolutePath());
+                    String p;
+                    for(int i = 0; i < this.friendList.size(); i++)
+                    {
+                        p = currentDirectory.getCanonicalPath();
+                        File file = new File(p + "/temp_" + friendList.get(i).username + ".db");
+                        FileWriter temp = new FileWriter(file);
+                        BufferedWriter b = new BufferedWriter(temp);
+                        b.write("<html>\n</html>");
+                    }
                 }
                 
                 /*
@@ -234,42 +245,7 @@ public class Receive implements Runnable
     }
     
     public void UpdateChatText(String text)
-    {
-        FileReader in = null;
-        BufferedReader b = null;
-        File currentDirectory = new File(new File(".").getAbsolutePath());
-        String p = null; 
-        //StringBuilder doc = null;
-        try 
-        {
-            p = currentDirectory.getCanonicalPath();
-            in = new FileReader(p + "\\temp" + this.yNickname + ".db");
-            b = new BufferedReader(in);
-            doc = new StringBuilder(b.readLine());
-            String temp = b.readLine();
-            if(temp != null)
-            {
-                doc = new StringBuilder(temp);
-                temp = b.readLine();
-                while(temp != null)
-                    doc.append(temp);
-            }
-        } catch (FileNotFoundException ex) 
-        {
-            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
-        } finally 
-        {
-            try 
-            {
-                in.close();
-            } catch (IOException ex) 
-            {
-                Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
+    {        
         System.out.println("MESS content: " + text);
         String pic = "<img src=\"C:\\Users\\nguye\\Pictures\\11212762_776134922485724_4283480414057853955_n.jpg\" alt=\"avt\" style=\"width:24px;height:24px;\">";
         String s = "<span style=\"color:red;font-weight:bold\">&emsp <span style=\"color:blue;font-weight:bold\">" + this.fNickname.toUpperCase() + "</span> &emsp[" + this.get_date() + "]</span>: ";
@@ -279,12 +255,24 @@ public class Receive implements Runnable
             s = s + text.substring(1, text.length());
         else
             s = s + text;
-        doc.append("\n<br>" + s + "</br>");
-        s = doc.toString();
-        s = "<html>" + s + "\n</html>";
-        System.out.println(s);
-        t.setText(s);
-        write_temp();
+        
+        File currentDirectory = new File(new File(".").getAbsolutePath());
+        String p;
+        File html = null;
+        RandomAccessFile b = null;
+        try
+        {
+            p = currentDirectory.getCanonicalPath();
+            html = new File(p + "/temp.db");
+            b = new RandomAccessFile(html, "rw");
+            b.seek(html.length() - 7);
+            b.write(("<br>" + s + "</br></html>").getBytes(), 0, ("<br>" + s + "</br></html>").length());
+            b.close();
+            this.t.setPage(html.toURI().toURL());
+        }
+        catch (IOException ex)
+        {
+        }
     }
     
     public String get_date()

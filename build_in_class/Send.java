@@ -27,7 +27,7 @@ public class Send implements Runnable
                         // send: gui file
     public String content;  // hello: <nickname> <ip> <port_send>
                             // ack: <ip> <port_send>
-                            // mess: <content>
+                            // mess: <from> <to> <content>
                             // file: <file_name>
                             // star: <file_name>
                             // eof: <file_name>
