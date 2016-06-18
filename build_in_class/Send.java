@@ -45,15 +45,6 @@ public class Send implements Runnable
         System.out.println("Init Thread Send");
         this.threadName = name;
         System.out.println("Thread name: " + this.threadName);
-        try
-        {
-            dsoc = new Socket(IpDest, PortDes, yIP, yPort); // connect to server
-            send2Server = new DataOutputStream(dsoc.getOutputStream());
-                    
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public Send(String name, String flag)
@@ -62,6 +53,11 @@ public class Send implements Runnable
         this.threadName = name;
         this.flag = flag.toUpperCase();
         System.out.println("Thread name: " + this.threadName);
+    }
+    
+    public void InitConnection()
+    {
+        
         try
         {
             dsoc = new Socket(IpDest, PortDes, yIP, yPort); // connect to server

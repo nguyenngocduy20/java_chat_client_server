@@ -46,14 +46,6 @@ public class Receive implements Runnable
         System.out.println("Your IP: " + yIP + "\tYour port: " + yPort);
         this.yNickname = "anonymous";
         this.fNickname = "anonymous_friend";
-        try
-        {
-            dsoc = new Socket(this.fIP, this.fPort, this.yIP, this.yPort); // connect to server
-            receiveFromServer = new BufferedReader(new InputStreamReader(dsoc.getInputStream()));
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
-        }
             
     }
 
@@ -64,6 +56,10 @@ public class Receive implements Runnable
         System.out.println("Thread name: " + this.threadName +"\tYour IP: " + yIP + "\tYour port: " + yPort);
         this.yNickname = "anonymous";
         this.fNickname = "anonymous_friend";
+    }
+    
+    public void InitConnection()
+    {
         try
         {
             dsoc = new Socket(this.fIP, this.fPort, this.yIP, this.yPort); // connect to server
@@ -153,6 +149,7 @@ public class Receive implements Runnable
                 if(this.flag.equals("CRYP"))
                 {
                     // this.content = method used by server
+                    acked = true;
                     cryp_algo = this.content;
                 }
             } catch (SocketTimeoutException ex)
